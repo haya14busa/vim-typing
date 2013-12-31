@@ -28,8 +28,6 @@ let s:save_cpo = &cpo
 set cpo&vim
 " }}}
 
-
-
 " Creates a new Vital object
 let s:V = vital#of('vim-typing')
 
@@ -44,6 +42,25 @@ let s:S = s:V.import('Data.String')
 " Random
 " :h vital-random-xor128.txt
 let s:X = s:V.import('Random.Xor128')
+
+" Test of Vital Import {{{
+function! typing#TestBufferManager() "{{{
+    " creates new manager
+	let m = s:BM.new()
+	" opens a new buffer named 'Test' to a new window
+	call m.open('Test')
+    " gets the config value
+    echom m.config('range')
+    return m.config('range') " -> 'tabpage'
+endfunction "}}}
+function! typing#TestDataString() "{{{
+	return s:S.replace("fooba.bazbar", "ba.", "zzz")
+	" -> foozzzbazbar
+endfunction "}}}
+function! typing#TestRandom() "{{{
+    return s:X.rand()
+endfunction "}}}
+"}}}
 
 " Restore 'cpoptions' {{{
 let &cpo = s:save_cpo
