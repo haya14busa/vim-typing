@@ -29,6 +29,22 @@ set cpo&vim
 " }}}
 
 
+
+" Creates a new Vital object
+let s:V = vital#of('vim-typing')
+
+" BufferManager
+" :h vital-vim-buffer_manager.txt
+let s:BM = s:V.import('Vim.BufferManager')
+
+" String
+" :h vital-data-string.txt
+let s:S = s:V.import('Data.String')
+
+" Random
+" :h vital-random-xor128.txt
+let s:X = s:V.import('Random.Xor128')
+
 " Restore 'cpoptions' {{{
 let &cpo = s:save_cpo
 unlet s:save_cpo
