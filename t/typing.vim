@@ -17,5 +17,22 @@ describe 'vim-typing'
         Expect typing#is_open() ==# 1
     end
 
-end
+    it 'match text while insertmode'
+        " call typing#_open_text()
+        " call typing#reset()
+        " call setline(1,'Happy Vimming!')
+        "
+        " call typing#_open_input()
+        Typing
 
+        exec "normal! \<C-w>k"
+        call typing#reset()
+        call setline(1,'Happy Vimming!')
+        set nomodifiable
+        exec "normal! \<C-w>j"
+        exec "normal! iHappy Vimming!"
+        let input_txt = getline(1)
+        Expect input_txt ==# ''
+    end
+
+end

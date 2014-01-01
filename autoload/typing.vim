@@ -57,12 +57,14 @@ endfunction "}}}
 function! typing#open(text) "{{{
     call typing#_open_text(a:text)
     call typing#_open_input()
+    call typing#setautocmd()
     nnoremap <buffer> q :call typing#close()<CR>
     startinsert!
 endfunction "}}}
 function! typing#_open_text(text) "{{{
     call s:bm_text.open('typing:text')
     call typing#reset()
+    call typing#setautocmd()
     call typing#draw_text(a:text)
     setlocal nomodifiable
 endfunction "}}}
@@ -149,6 +151,30 @@ function! typing#get_linediff_index(lnum) "{{{
 endfunction "}}}
 
 " }}}
+
+" Autocommands {{{
+" :h TextChanged , :h TextChangedI
+function! typing#setautocmd() "{{{
+    augroup plugin-typing
+        autocmd!
+        autocmd CursorMovedI,InsertLeave,TextChanged
+            \ <buffer> call typing#check()
+    augroup END
+endfunction "}}}
+
+" }}}
+
+function! typing#check() "{{{
+    let is_match = typing#is_match_whole()
+    if is_match ==# 1
+        exec 'normal! \<Esc>'
+        call typing#reset()
+        echom 'End!'
+        return
+    endif
+endfunction
+"}}}
+
 " Creates a new Vital object {{{
 let s:V = vital#of('vim-typing')
 
