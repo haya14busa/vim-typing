@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: typing.vim
 " AUTHOR: haya14busa
-" Last Change: 31-Dec-2013.
+" Last Change: 01-Jan-2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -35,6 +35,13 @@ let s:save_cpo = &cpo
 set cpo&vim
 " }}}
 
+
+if !exists(":Typing")
+  command! -range -nargs=0 Typing
+    \ call typing#init(<count>,<line1>,<line2>)
+  " :h <count>
+  " :h <line1> , :h <line2>
+endif
 
 " Restore 'cpoptions' {{{
 let &cpo = s:save_cpo

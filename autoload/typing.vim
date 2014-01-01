@@ -28,6 +28,31 @@ let s:save_cpo = &cpo
 set cpo&vim
 " }}}
 
+function! typing#init(use_range, first_line, last_line) "{{{
+    " :h a:firstline
+    " :h a:lastline
+    " echom 'a:firstline: ' a:firstline
+    let config = {}
+    if a:use_range !=# -1
+        let config.range = {
+            \ 'first' : a:first_line,
+            \ 'last'  : a:last_line,
+            \ }
+    endif
+    let config.filetype = &filetype
+    let text = typing#get_text(config)
+    call typing#open(text)
+endfunction "}}}
+
+function! typing#get_text(config) "{{{
+    if has_key(a:config, 'range')
+        return getline(a:config.range.first,
+                    \  a:config.range.last)
+    else
+        return getline(1,'$')
+    endif
+endfunction "}}}
+
 " Buffer: Open & Close {{{
 function! typing#open(text) "{{{
     call typing#_open_text(a:text)
