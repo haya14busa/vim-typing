@@ -86,6 +86,44 @@ function! typing#reset() "{{{
     nnoremap <buffer> q :call typing#close()<CR>
 endfunction "}}}
 "}}}
+
+" Match? {{{
+function! typing#is_match_whole() "{{{
+    " :h getbufline()
+    " getbufline({expr}, {lnum} [, {end}])
+    let text_content = typing#_get_text_content() "list
+    let input_content = typing#_get_input_content() "list
+
+    if len(text_content) !=# len(input_content)
+        return 0
+    endif
+
+    for lnum in range(max([len(text_content), len(input_content)]))
+        if typing#get_linediff_index(lnum) !=# -1
+            return 0
+        endif
+    endfor
+    return 1
+endfunction "}}}
+
+function! typing#_get_text_content() "{{{
+    let buf_num = bufnr('typing:text')
+    return getbufline(buf_num, 1 , '$')
+endfunction "}}}
+
+function! typing#_get_input_content() "{{{
+    let buf_num = bufnr('typing:input')
+    return getbufline(buf_num, 1 , '$')
+endfunction "}}}
+
+function! typing#get_linediff_index(lnum) "{{{
+    " l -> line
+    let l_text_content = typing#_get_text_content()[a:lnum]
+    let l_input_content = typing#_get_input_content()[a:lnum]
+    return s:S.diffidx(l_text_content, l_input_content)
+endfunction "}}}
+
+" }}}
 " Creates a new Vital object {{{
 let s:V = vital#of('vim-typing')
 
