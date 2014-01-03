@@ -157,7 +157,7 @@ endfunction "}}}
 function! typing#setautocmd() "{{{
     augroup plugin-typing
         autocmd!
-        autocmd CursorMovedI,InsertLeave,TextChanged
+        autocmd CursorMovedI,InsertLeave,TextChanged,CmdwinLeave
             \ <buffer> call typing#check()
     augroup END
 endfunction "}}}
